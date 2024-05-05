@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+import helpers
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -26,9 +27,7 @@ SECRET_KEY = "django-insecure-*!@#c_!u++$g618d%p^x2&us$xf07(#u8g*tlbmo%6)t-(tv()
 DEBUG = True
 
 ALLOWED_HOSTS = [".ngrok-free.app"]
-CSRF_TRUSTED_ORIGINS = [
-    "https://a1dd-2409-40d1-1008-7ac-5333-f8b6-3e98-933f.ngrok-free.app"
-]
+CSRF_TRUSTED_ORIGINS = ["https://skilled-osprey-illegally.ngrok-free.app/"]
 
 
 # Application definition
@@ -40,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_celery_beat",
+    "django_celery_results",
     "bot",
 ]
 
@@ -125,3 +126,18 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# celery -A config worker --beat -l info
+CELERY_RESULT_BACKEND = "django-db"
+CELERY_BROKER_URL = helpers.config("CELERY_BROKER_URL", default=None, cast=str)
+
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers.DatabaseScheduler"
+
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+
+# redis_backend_use_ssl
+CELERY_REDIS_BACKEND_USE_SSL = True
+
+# broker_use_ssl
+CELERY_BROKER_USE_SSL = True

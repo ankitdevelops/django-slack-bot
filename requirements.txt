@@ -1,3 +1,13 @@
-django
+Django
 python-decouple
 requests
+Celery
+Redis
+django-celery-beat 
+django-celery-results
+openai
+jupyter
+llama-index
+llama-index-vector-stores-upstash
+upstash-vector
+jupyter
